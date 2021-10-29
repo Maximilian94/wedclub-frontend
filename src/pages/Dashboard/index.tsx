@@ -1,10 +1,15 @@
 import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
 import clsx from 'clsx';
+
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Appbar from '../../components/organisms/Appbar';
 import SideBar from '../../components/organisms/SideBar';
+import Costumers from '../../components/templates/Costumers';
+import Account from '../../components/templates/Account';
 
 const drawerWidth = 240;
 
@@ -38,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PersistentDrawerLeft() {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -55,6 +60,13 @@ export default function PersistentDrawerLeft() {
       <SideBar open={open} handleDrawerClose={handleDrawerClose} />
       <main className={clsx(classes.content, { [classes.contentShift]: open })}>
         <div className={classes.drawerHeader} />
+        <Router>
+          <Switch>
+            <Route path="/dashboard/costumers" component={Costumers} />
+            <Route path="/dashboard/account" component={Account} />
+            <Route path="/dashboard">Dashboard</Route>
+          </Switch>
+        </Router>
         <Typography paragraph>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus

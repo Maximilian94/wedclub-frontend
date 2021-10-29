@@ -16,6 +16,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import GroupIcon from '@material-ui/icons/Group';
 import PersonIcon from '@material-ui/icons/Person';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import DashboardIcon from '@material-ui/icons/Dashboard';
 
 const drawerWidth = 240;
 
@@ -41,8 +42,9 @@ interface Props {
 }
 
 const navigation = [
-  { title: 'Costumers', icon: <GroupIcon /> },
-  { title: 'Account', icon: <PersonIcon /> },
+  { title: 'Dashboad', icon: <DashboardIcon />, href: '/dashboard' },
+  { title: 'Costumers', icon: <GroupIcon />, href: '/dashboard/costumers' },
+  { title: 'Account', icon: <PersonIcon />, href: '/dashboard/account' },
 ];
 
 const SideBar: React.FC<Props> = ({ open, handleDrawerClose }) => {
@@ -68,8 +70,8 @@ const SideBar: React.FC<Props> = ({ open, handleDrawerClose }) => {
       </div>
       <Divider />
       <List>
-        {navigation.map(({ title, icon }) => (
-          <ListItem button key={title}>
+        {navigation.map(({ title, icon, href }) => (
+          <ListItem button key={title} component="a" href={href}>
             <ListItemIcon>{icon}</ListItemIcon>
             <ListItemText primary={title} />
           </ListItem>

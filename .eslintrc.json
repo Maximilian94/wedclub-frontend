@@ -22,10 +22,12 @@
       "ignorePackages",
       {
         "ts": "never",
-        "tsx": "never"
+        "tsx": "never",
+        "jsx": "never"
       }
     ],
-    "object-curly-newline": ["error", { "multiline": true }]
+    "object-curly-newline": ["error", { "multiline": true }],
+    "react/jsx-one-expression-per-line": "off"
   },
   "settings": {
     "import/resolver": {

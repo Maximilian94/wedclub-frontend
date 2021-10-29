@@ -5,7 +5,7 @@ interface FormInputsProps {
   name: string;
   label: string;
   value: string;
-  change: Function;
+  handleChange: Function;
   helperText: string;
   autocomplete: string;
 }
@@ -14,9 +14,9 @@ const FormInputs: React.FC<FormInputsProps> = ({
   name,
   label,
   value,
-  change,
+  handleChange,
   autocomplete,
-  helperText,
+  helperText = '',
 }) => (
   <TextField
     autoComplete={autocomplete}
@@ -27,7 +27,7 @@ const FormInputs: React.FC<FormInputsProps> = ({
     id={name}
     label={label}
     autoFocus
-    onChange={(e) => change(e.target)}
+    onChange={(e) => handleChange(e.target)}
     value={value}
     error={!!helperText}
     helperText={helperText || null}

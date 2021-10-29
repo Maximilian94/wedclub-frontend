@@ -4,13 +4,15 @@ import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import Login from './pages/SignUp';
+import SignIn from './pages/SignIn';
 
 function App() {
   return (
     <Router>
       <Switch>
         <div className="App">
-          <Route path="/" component={Login} />
+          <Route exact path="/" component={SignIn} />
+          <Route path="/signup" component={Login} />
         </div>
       </Switch>
     </Router>

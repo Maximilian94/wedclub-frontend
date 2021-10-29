@@ -6,11 +6,25 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
+import Link from '@material-ui/core/Link';
 
 import FormInputs from '../../atoms/FormInputs';
 import useStyles from '../../../Hooks/styles';
 
 import logo from '../../../images/Logo.png';
+
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://mui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}.
+    </Typography>
+  );
+}
 
 const INICIAL_DATA = { email: '', password: '' };
 interface FormData {
@@ -82,6 +96,16 @@ function SignIn() {
           </Button>
         </form>
       </div>
+      <Grid container justifyContent="flex-end">
+        <Grid item>
+          <Link href="/signup" variant="body2">
+            Dont have an account? Sign up
+          </Link>
+        </Grid>
+      </Grid>
+      <Box mt={5}>
+        <Copyright />
+      </Box>
     </Container>
   );
 }

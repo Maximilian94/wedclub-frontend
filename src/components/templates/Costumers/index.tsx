@@ -88,7 +88,7 @@ export default function AcccessibleTable() {
                       variant="contained"
                       color="primary"
                       startIcon={<EditIcon />}
-                      href={`/dashboard/user/edit/${row.id}`}
+                      href={`/dashboard/user/${row.id}`}
                     >
                       Edit
                     </Button>

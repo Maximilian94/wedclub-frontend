@@ -5,6 +5,7 @@ import { RouteComponentProps } from 'react-router-dom';
 
 // Components
 import BasicUserDetail from '../../organisms/BasicUserDetail';
+import PersonalUserDetail from '../../organisms/PersonalUserDetail';
 
 interface RouterParams {
   id: string;
@@ -22,6 +23,7 @@ const UserDetail: React.FC<Props> = ({ match }) => {
   return (
     <Box className={classes.box}>
       <BasicUserDetail />
+      <PersonalUserDetail />
       User Detail{match.params.id}
     </Box>
   );

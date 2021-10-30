@@ -4,7 +4,6 @@ import {
   Box,
   Divider,
   Grid,
-  Paper,
   Button,
   TextField,
 } from '@material-ui/core';
@@ -14,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import HeaderUserBox from '../../molecules/HeaderUserBox';
+import BoxUserDetails from '../../atoms/BoxUserDetails';
 
 const useStyles = makeStyles(() => ({
   paper: { margin: 'auto' },
@@ -24,7 +24,7 @@ const BasicUserDetail: React.FC = () => {
   const classes = useStyles();
 
   return (
-    <Paper className={classes.paper}>
+    <BoxUserDetails>
       <HeaderUserBox title="Basic details" Icon={<AccountBoxIcon />} />
       <Divider />
       <Grid container>
@@ -67,7 +67,7 @@ const BasicUserDetail: React.FC = () => {
           </Box>
         </Grid>
       </Grid>
-    </Paper>
+    </BoxUserDetails>
   );
 };
 

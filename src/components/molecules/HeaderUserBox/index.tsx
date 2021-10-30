@@ -2,7 +2,10 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Typography } from '@material-ui/core';
 
-const useStyles = makeStyles(() => ({ paperHead: { padding: '5px 10px' } }));
+const useStyles = makeStyles(() => ({
+  paperHead: { padding: '5px 10px' },
+  titleHead: { marginLeft: '10px' },
+}));
 
 interface Props {
   title: string;
@@ -19,14 +22,11 @@ const HeaderUserBox: React.FC<Props> = ({ title, Icon }) => {
       alignItems="center"
       className={classes.paperHead}
     >
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        width="150px"
-      >
+      <Box display="flex" justifyContent="space-between" alignItems="center">
         {Icon}
-        <Typography variant="h6">{title}</Typography>
+        <Typography variant="h6" className={classes.titleHead}>
+          {title}
+        </Typography>
       </Box>
       <Typography variant="caption">* All fields are mandatory</Typography>
     </Box>

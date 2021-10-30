@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from '@material-ui/core';
+import { Box, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -24,6 +24,11 @@ const UserDetail: React.FC<Props> = ({ match }) => {
     <Box className={classes.box}>
       <BasicUserDetail />
       <PersonalUserDetail />
+      <Box display="flex" justifyContent="flex-end">
+        <Button variant="contained" color="primary">
+          Save
+        </Button>
+      </Box>
       User Detail{match.params.id}
     </Box>
   );

@@ -22,3 +22,13 @@ export const userLogin = async (email: string, password: string) => {
   const body = { email, password };
   return fetch(`${BASE_URL}/login`, options('POST', body));
 };
+
+export const createAccount = async (
+  email: string,
+  password: string,
+  firstName: string,
+  lastName: string,
+) => {
+  const body = { email, password, firstName, lastName };
+  return fetch(`${BASE_URL}/user`, options('POST', body));
+};

@@ -10,8 +10,17 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+import { Snackbar } from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
 import FormInputs from '../../atoms/FormInputs';
 import useStyles from '../../../Hooks/styles';
+import {
+  passwordCreationValidation,
+  emailValidation,
+  nameValidation,
+} from '../../../services/validations';
+
+import { createAccount } from '../../../services/api';
 
 interface ErrorObj {
   firstName: string;
@@ -45,6 +54,7 @@ const invalidFielLabel: any = {
 export default function SignUp() {
   const [formsData, setFormsData] = useState(INICIAL_DATA);
   const [errors, setErrors] = useState<ErrorObj>(INICIAL_ERROR);
+  const [fetchFeedback, setFetchFeedback] = useState('');
   const classes = useStyles();
 
   const handleChange = (target: any) => {
@@ -159,6 +169,45 @@ export default function SignUp() {
     />
   );
 
+  const isAllDataValid = () => {
+    const isFirstNameValid = nameValidation(formsData.firstName);
+    const isLastNameValid = nameValidation(formsData.lastName);
+    const isEmailValid = emailValidation(formsData.email);
+    const isPasswordValid = passwordCreationValidation(
+      formsData.password,
+      formsData.confirmPassword,
+    );
+    if (
+      isEmailValid && // eslint-disable-line
+      isPasswordValid && // eslint-disable-line
+      isFirstNameValid && // eslint-disable-line
+      isLastNameValid
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  const fetchCreateAccount = async () => {
+    if (!isAllDataValid()) {
+      console.log('Some data is incorrect');
+      return '';
+    }
+
+    const response: any = await createAccount(
+      formsData.email,
+      formsData.password,
+      formsData.firstName,
+      formsData.lastName,
+    );
+
+    if (response.status === 200) {
+      const { message } = await response.json();
+      setFetchFeedback(message);
+    }
+    return '';
+  };
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -199,6 +248,8 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={() => fetchCreateAccount()}
+            disabled={!isAllDataValid()}
           >
             Sign Up
           </Button>
@@ -210,6 +261,11 @@ export default function SignUp() {
             </Grid>
           </Grid>
         </form>
+        <Snackbar open={fetchFeedback !== ''} autoHideDuration={6000}>
+          <MuiAlert elevation={6} variant="filled" severity="success">
+            {fetchFeedback}
+          </MuiAlert>
+        </Snackbar>
       </div>
     </Container>
   );

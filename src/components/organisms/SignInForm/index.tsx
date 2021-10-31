@@ -39,7 +39,6 @@ function SignIn() {
 
     const response = await userLogin(formData.email, formData.password);
     if (response.status === 200) {
-      console.log(response);
       setIsLoading(false);
       return history.push('/dashboard');
     }
@@ -47,7 +46,6 @@ function SignIn() {
       const { message } = await response.json();
       setLoginFeedback(message);
       setIsLoading(false);
-      console.log('Usuário ou senha incorreto');
     }
     return '';
   };

@@ -8,10 +8,13 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 
+import { useHistory } from 'react-router-dom';
 import FormInputs from '../../atoms/FormInputs';
 import useStyles from '../../../Hooks/styles';
 
 import logo from '../../../images/Logo.png';
+
+import { userLogin } from '../../../services/api';
 
 const INICIAL_DATA = { email: '', password: '' };
 interface FormData {
@@ -22,6 +25,19 @@ interface FormData {
 function SignIn() {
   const [formData, setFormData] = useState<FormData>(INICIAL_DATA);
   const classes = useStyles();
+  const history = useHistory();
+
+  const loginRedirect = async () => {
+    const response = await userLogin(formData.email, formData.password);
+    if (response.status === 200) {
+      console.log('Teste');
+      return history.push('/dashboard');
+    }
+    if (response.status === 401) {
+      console.log('Usuário ou senha incorreto');
+    }
+    return '';
+  };
 
   const handleChange = (target: any) => {
     const { name, value } = target;
@@ -78,7 +94,8 @@ function SignIn() {
             variant="contained"
             color="primary"
             className={classes.submit}
-            href="/dashboard"
+            // href="/dashboard"
+            onClick={() => loginRedirect()}
           >
             Sign In
           </Button>

@@ -7,8 +7,10 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
+import MuiAlert from '@material-ui/lab/Alert';
 
 import { useHistory } from 'react-router-dom';
+import { LinearProgress, Snackbar } from '@material-ui/core';
 import FormInputs from '../../atoms/FormInputs';
 import useStyles from '../../../Hooks/styles';
 
@@ -24,16 +26,27 @@ interface FormData {
 
 function SignIn() {
   const [formData, setFormData] = useState<FormData>(INICIAL_DATA);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loginFeedback, setLoginFeedback] = useState('');
   const classes = useStyles();
   const history = useHistory();
 
   const loginRedirect = async () => {
+    setIsLoading(true);
+    if (loginFeedback) {
+      setLoginFeedback('');
+    }
+
     const response = await userLogin(formData.email, formData.password);
     if (response.status === 200) {
-      console.log('Teste');
+      console.log(response);
+      setIsLoading(false);
       return history.push('/dashboard');
     }
-    if (response.status === 401) {
+    if (response.status !== 200) {
+      const { message } = await response.json();
+      setLoginFeedback(message);
+      setIsLoading(false);
       console.log('Usuário ou senha incorreto');
     }
     return '';
@@ -69,6 +82,7 @@ function SignIn() {
       value={formData.password}
     />
   );
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -88,6 +102,16 @@ function SignIn() {
               {password()}
             </Grid>
           </Grid>
+          {isLoading ? <LinearProgress className={classes.loading} /> : null}
+          <Snackbar
+            open={loginFeedback !== ''}
+            autoHideDuration={6000}
+            // onClose={handleClose}
+          >
+            <MuiAlert elevation={6} variant="filled" severity="error">
+              {loginFeedback}
+            </MuiAlert>
+          </Snackbar>
           <Button
             // type="submit"
             fullWidth

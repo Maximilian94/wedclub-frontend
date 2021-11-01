@@ -52,10 +52,10 @@ const useStyles = makeStyles((theme) => ({
 export default function PersistentDrawerLeft() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
-  const { token } = useUser();
+  const { getToken } = useUser();
   const history = useHistory();
 
-  const isTokenExists = () => !!token;
+  const isTokenExists = () => !!getToken();
 
   const invalidTokenRedirectsToLogin = () => {
     if (!isTokenExists()) {

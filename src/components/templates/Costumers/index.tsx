@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -13,6 +13,7 @@ import { Button, Grid, Typography } from '@material-ui/core';
 //  Icons
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import { getAllUsers } from '../../../services/api';
 
 const useStyles = makeStyles((theme) => ({
   table: { minWidth: 650 },
@@ -33,18 +34,31 @@ const useStyles = makeStyles((theme) => ({
   name: { fontWeight: 'bold', color: theme.palette.secondary.dark },
 }));
 
-function createData(name: string, email: string, role: string, id: number) {
-  return { name, email, role, id };
-}
+// function createData(name: string, email: string, role: string, id: number) {
+//   return { name, email, role, id };
+// }
 
-const rows = [
-  createData('Frozen yoghurt', 'email@email.com', 'Admin', 1),
-  createData('Ice cream sandwich', 'email@email.com', 'Costumer', 2),
-  createData('Eclair', 'email@email.com', 'Costumer', 3),
-];
+interface Users {
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: string;
+  id: string;
+}
 
 export default function AcccessibleTable() {
   const classes = useStyles();
+  const [users, setUsers] = useState<Users[]>([]);
+
+  const fetchUsers = async (): Promise<any> => {
+    const response = await getAllUsers();
+    const usersResponse = await response.json();
+    setUsers(usersResponse);
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   return (
     <TableContainer component={Paper} className={classes.tableContainer}>
@@ -67,15 +81,21 @@ export default function AcccessibleTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.name}>
+          {users.map((row) => (
+            <TableRow key={`${row.firstName}-${row.lastName}`}>
               <TableCell>
                 <Grid container alignItems="center">
                   <Grid item lg={2}>
-                    <Avatar alt={row.name} src="." className={classes.avatar} />
+                    <Avatar
+                      alt={`${row.firstName}-${row.lastName}`}
+                      src="."
+                      className={classes.avatar}
+                    />
                   </Grid>
                   <Grid item lg={10}>
-                    <Typography className={classes.name}>{row.name}</Typography>
+                    <Typography className={classes.name}>
+                      {`${row.firstName} ${row.lastName}`}
+                    </Typography>
                   </Grid>
                 </Grid>
               </TableCell>

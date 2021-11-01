@@ -32,3 +32,5 @@ export const createAccount = async (
   const body = { email, password, firstName, lastName };
   return fetch(`${BASE_URL}/user`, options('POST', body));
 };
+
+export const getAllUsers = async () => fetch(`${BASE_URL}/user`, options('GET'));

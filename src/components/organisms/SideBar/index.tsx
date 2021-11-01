@@ -18,6 +18,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import { Avatar, Box, Typography } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import { useUser } from '../../../context/user';
 
 const drawerWidth = 240;
@@ -43,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.getContrastText(theme.palette.primary.light),
   },
   userInfoBox: { padding: '10px 0' },
+  link: { textDecoration: 'none', color: theme.palette.text.primary },
 }));
 
 interface Props {
@@ -94,21 +96,25 @@ const SideBar: React.FC<Props> = ({ open, handleDrawerClose }) => {
       <Divider />
       <List>
         {navigation.map(({ title, icon, href }) => (
-          <ListItem button key={title} component="a" href={href}>
-            <ListItemIcon>{icon}</ListItemIcon>
-            <ListItemText primary={title} />
-          </ListItem>
+          <Link to={{ pathname: href }} className={classes.link}>
+            <ListItem button key={title}>
+              <ListItemIcon>{icon}</ListItemIcon>
+              <ListItemText primary={title} />
+            </ListItem>
+          </Link>
         ))}
       </List>
       <Divider />
       <List>
         {['Log out'].map((text) => (
-          <ListItem button key={text} component="a" href="/">
-            <ListItemIcon>
-              <ExitToAppIcon />
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
+          <Link to="/" className={classes.link}>
+            <ListItem button key={text}>
+              <ListItemIcon>
+                <ExitToAppIcon />
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          </Link>
         ))}
       </List>
     </Drawer>

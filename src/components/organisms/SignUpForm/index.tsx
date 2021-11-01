@@ -188,6 +188,8 @@ export default function SignUp() {
     return false;
   };
 
+  const resetForms = () => setFormsData(INICIAL_DATA);
+
   const fetchCreateAccount = async () => {
     if (!isAllDataValid()) {
       console.log('Some data is incorrect');
@@ -201,9 +203,10 @@ export default function SignUp() {
       formsData.lastName,
     );
 
-    if (response.status === 200) {
+    if (response.status === 201) {
       const { message } = await response.json();
       setFetchFeedback(message);
+      resetForms();
     }
     return '';
   };

@@ -18,7 +18,7 @@ const options = (
 
 export const userUpdate = async () => {};
 
-export const userLogin = async (email: string, password: string) => {
+export const userLogin: any = async (email: string, password: string) => {
   const body = { email, password };
   return fetch(`${BASE_URL}/login`, options('POST', body));
 };

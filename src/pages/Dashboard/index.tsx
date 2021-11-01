@@ -59,10 +59,8 @@ export default function PersistentDrawerLeft() {
 
   const invalidTokenRedirectsToLogin = () => {
     if (!isTokenExists()) {
-      console.log('N é valido');
       return history.push('/');
     }
-    console.log('É valido');
     return null;
   };
 

@@ -16,7 +16,6 @@ import useStyles from '../../../Hooks/styles';
 
 import logo from '../../../images/Logo.png';
 
-import { userLogin } from '../../../services/api';
 import { useUser } from '../../../context/user';
 
 const INICIAL_DATA = { email: '', password: '' };
@@ -39,8 +38,8 @@ function SignIn() {
       setLoginFeedback('');
     }
 
-    const response = await userLogin(formData.email, formData.password);
-    const { message, token } = await response.json();
+    const response = await userContext.login(formData.email, formData.password);
+    const { message, token } = response;
     if (response.status === 200) {
       setIsLoading(false);
       userContext.setToken(token);

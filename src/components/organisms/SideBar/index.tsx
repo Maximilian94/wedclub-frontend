@@ -17,6 +17,8 @@ import GroupIcon from '@material-ui/icons/Group';
 import PersonIcon from '@material-ui/icons/Person';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import DashboardIcon from '@material-ui/icons/Dashboard';
+import { Avatar, Box, Typography } from '@material-ui/core';
+import { useUser } from '../../../context/user';
 
 const drawerWidth = 240;
 
@@ -34,6 +36,13 @@ const useStyles = makeStyles((theme) => ({
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
   },
+  avatar: {
+    height: '100px',
+    width: '100px',
+    backgroundColor: theme.palette.primary.light,
+    color: theme.palette.getContrastText(theme.palette.primary.light),
+  },
+  userInfoBox: { padding: '10px 0' },
 }));
 
 interface Props {
@@ -50,6 +59,7 @@ const navigation = [
 const SideBar: React.FC<Props> = ({ open, handleDrawerClose }) => {
   const classes = useStyles();
   const theme = useTheme();
+  const { userData } = useUser();
 
   return (
     <Drawer
@@ -68,6 +78,19 @@ const SideBar: React.FC<Props> = ({ open, handleDrawerClose }) => {
           )}
         </IconButton>
       </div>
+      <Divider />
+      <Box
+        display="flex"
+        alignItems="center"
+        flexDirection="column"
+        className={classes.userInfoBox}
+      >
+        <Avatar alt={userData.firstName} className={classes.avatar} src="." />
+        <Typography variant="h6">
+          {`${userData.firstName} ${userData.lastName}`}
+        </Typography>
+        <Typography variant="caption">{userData.role}</Typography>
+      </Box>
       <Divider />
       <List>
         {navigation.map(({ title, icon, href }) => (

@@ -17,6 +17,7 @@ import useStyles from '../../../Hooks/styles';
 import logo from '../../../images/Logo.png';
 
 import { userLogin } from '../../../services/api';
+import { useUser } from '../../../context/user';
 
 const INICIAL_DATA = { email: '', password: '' };
 interface FormData {
@@ -28,6 +29,7 @@ function SignIn() {
   const [formData, setFormData] = useState<FormData>(INICIAL_DATA);
   const [isLoading, setIsLoading] = useState(false);
   const [loginFeedback, setLoginFeedback] = useState('');
+  const userContext = useUser();
   const classes = useStyles();
   const history = useHistory();
 
@@ -38,12 +40,13 @@ function SignIn() {
     }
 
     const response = await userLogin(formData.email, formData.password);
+    const { message, token } = await response.json();
     if (response.status === 200) {
       setIsLoading(false);
+      userContext.setToken(token);
       return history.push('/dashboard');
     }
     if (response.status !== 200) {
-      const { message } = await response.json();
       setLoginFeedback(message);
       setIsLoading(false);
     }

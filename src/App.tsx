@@ -7,15 +7,19 @@ import Login from './pages/SignUp';
 import SignIn from './pages/SignIn';
 import Dashboard from './pages/Dashboard';
 
+import { UserProvider } from './context/user';
+
 function App() {
   return (
-    <Router>
-      <Switch>
-        <Route exact path="/" component={SignIn} />
-        <Route path="/signup" component={Login} />
-        <Route path="/dashboard" component={Dashboard} />
-      </Switch>
-    </Router>
+    <UserProvider>
+      <Router>
+        <Switch>
+          <Route exact path="/" component={SignIn} />
+          <Route path="/signup" component={Login} />
+          <Route path="/dashboard" component={Dashboard} />
+        </Switch>
+      </Router>
+    </UserProvider>
   );
 }
 

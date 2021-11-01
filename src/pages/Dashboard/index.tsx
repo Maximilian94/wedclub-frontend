@@ -1,5 +1,10 @@
-import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  useHistory,
+} from 'react-router-dom';
 
 import clsx from 'clsx';
 
@@ -12,6 +17,7 @@ import SideBar from '../../components/organisms/SideBar';
 import Costumers from '../../components/templates/Costumers';
 import Account from '../../components/templates/Account';
 import UserDetail from '../../components/templates/UserDetail';
+import { useUser } from '../../context/user';
 
 const drawerWidth = 240;
 
@@ -46,6 +52,23 @@ const useStyles = makeStyles((theme) => ({
 export default function PersistentDrawerLeft() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+  const { token } = useUser();
+  const history = useHistory();
+
+  const isTokenExists = () => !!token;
+
+  const invalidTokenRedirectsToLogin = () => {
+    if (!isTokenExists()) {
+      console.log('N é valido');
+      return history.push('/');
+    }
+    console.log('É valido');
+    return null;
+  };
+
+  useEffect(() => {
+    invalidTokenRedirectsToLogin();
+  }, []);
 
   const handleDrawerOpen = () => {
     setOpen(true);

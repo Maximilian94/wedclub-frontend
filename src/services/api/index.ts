@@ -36,3 +36,9 @@ export const createAccount = async (
 export const getAllUsers = async () => fetch(`${BASE_URL}/user`, options('GET'));
 
 export const getUserById = async (id: string) => fetch(`${BASE_URL}/user/${id}`, options('GET'));
+
+export const updateUserById = async (id: string, newData: object) => {
+  const body = { ...newData };
+  const response = await fetch(`${BASE_URL}/user/${id}`, options('PUT', body));
+  console.log(response);
+};

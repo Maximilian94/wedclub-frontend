@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react';
-import { userLogin, getUserById } from '../services/api';
+import { userLogin, getUserById, updateUserById } from '../services/api';
 
 type ContextValue = {
   getToken: Function;
@@ -21,6 +21,7 @@ type ContextValue = {
   };
   getUserToUpdateData: Function;
   useToUpdateHandleChange: Function;
+  updateUserOnlyChangesFields: Function;
 };
 
 const DEFAULT_VALUE = {
@@ -43,6 +44,7 @@ const DEFAULT_VALUE = {
   },
   getUserToUpdateData: () => {},
   useToUpdateHandleChange: () => {},
+  updateUserOnlyChangesFields: () => {},
 };
 
 // eslint-disable-next-line
@@ -57,7 +59,8 @@ export const UserContext = createContext<ContextValue>(DEFAULT_VALUE);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [userData, setUserData] = useState<any>(DEfAULT_USER_DATA);
-  const [userToUpdateData, setUserToUpdateData] = useState(
+  const [originalUserToUpdateData, setOriginalUserToUpdateData] = useState({});
+  const [userToUpdateData, setUserToUpdateData] = useState<any>(
     DEFAULT_VALUE.userToUpdateData,
   );
 
@@ -91,6 +94,28 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem('wedUser', JSON.stringify(newData));
   };
 
+  const updateUserOnlyChangesFields = async (id: string) => {
+    const originalData: any = Object.entries(originalUserToUpdateData);
+    const updateData: any = Object.entries(userToUpdateData);
+    let changedValues: any = [];
+    if (originalData.length >= updateData.length) {
+      const changedFields = originalData.filter(
+        (item: any) => userToUpdateData[item[0]] !== item[1],
+      );
+      changedValues = changedFields.map((ondeItem: any) => [
+        ondeItem[0],
+        userToUpdateData[ondeItem[0]],
+      ]);
+    }
+
+    changedValues = Object.fromEntries(changedValues);
+    // console.log(originalData);
+    // console.log(updateData);
+    // console.log('Novo');
+    // console.log(changedValues);
+    updateUserById(id, changedValues);
+  };
+
   const useToUpdateHandleChange = (target: HTMLInputElement) => {
     const { name, value } = target;
     setUserToUpdateData({ ...userToUpdateData, [name]: value });
@@ -101,6 +126,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const data = await response.json();
     console.log(data);
     setUserToUpdateData(data.userData);
+    setOriginalUserToUpdateData(data.userData);
   };
 
   const context = {
@@ -111,6 +137,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     userToUpdateData,
     getUserToUpdateData,
     useToUpdateHandleChange,
+    updateUserOnlyChangesFields,
   };
 
   return (

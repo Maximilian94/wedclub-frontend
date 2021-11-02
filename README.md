@@ -6,6 +6,7 @@ It works in conjunction with a backend that is in this repository
 - https://github.com/Maximilian94/wedclub-backend
 
 ## Technologies used
+- Atomic Design methodology used
 
 - React.JS
 - TypeScript and Javascript

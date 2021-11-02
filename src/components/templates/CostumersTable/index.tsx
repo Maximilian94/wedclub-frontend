@@ -13,6 +13,7 @@ import { Button, Grid, Typography } from '@material-ui/core';
 //  Icons
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import { Link } from 'react-router-dom';
 import { getAllUsers } from '../../../services/api';
 
 const useStyles = makeStyles((theme) => ({
@@ -104,14 +105,17 @@ export default function AcccessibleTable() {
               <TableCell align="center">
                 <Grid container>
                   <Grid item lg={6}>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      startIcon={<EditIcon />}
-                      href={`/dashboard/user/${row._id}`} // eslint-disable-line
+                    <Link
+                      to={`/dashboard/user/${row._id}`} // eslint-disable-line
                     >
-                      Edit
-                    </Button>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<EditIcon />}
+                      >
+                        Edit
+                      </Button>
+                    </Link>
                   </Grid>
                   <Grid item lg={6}>
                     <Button

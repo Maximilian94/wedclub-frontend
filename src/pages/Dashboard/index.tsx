@@ -9,7 +9,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 //  Templates
 import Appbar from '../../components/organisms/Appbar';
 import SideBar from '../../components/organisms/SideBar';
-import Costumers from '../../components/templates/Costumers';
+import Costumers from '../../components/templates/CostumersTable';
 import Account from '../../components/templates/Account';
 import UserDetail from '../../components/templates/UserDetail';
 import { useUser } from '../../context/user';

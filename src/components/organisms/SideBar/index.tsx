@@ -61,7 +61,7 @@ const navigation = [
 const SideBar: React.FC<Props> = ({ open, handleDrawerClose }) => {
   const classes = useStyles();
   const theme = useTheme();
-  const { userData } = useUser();
+  const { userData, userUrlImage } = useUser();
 
   return (
     <Drawer
@@ -87,7 +87,11 @@ const SideBar: React.FC<Props> = ({ open, handleDrawerClose }) => {
         flexDirection="column"
         className={classes.userInfoBox}
       >
-        <Avatar alt={userData.firstName} className={classes.avatar} src="." />
+        <Avatar
+          alt={userData.firstName}
+          className={classes.avatar}
+          src={userUrlImage}
+        />
         <Typography variant="h6">
           {`${userData.firstName} ${userData.lastName}`}
         </Typography>

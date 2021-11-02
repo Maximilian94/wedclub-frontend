@@ -17,6 +17,8 @@ import HeaderUserBox from '../../molecules/HeaderUserBox';
 import BoxUserDetails from '../../atoms/BoxUserDetails';
 
 import { useUser } from '../../../context/user';
+import { uploadPhoto } from '../../../firebase/store.js';
+import { useSnackbar } from '../../../context/snackbar';
 
 const useStyles = makeStyles(() => ({
   paper: { margin: 'auto' },
@@ -26,10 +28,33 @@ const useStyles = makeStyles(() => ({
 const BasicUserDetail: React.FC = () => {
   const classes = useStyles();
   const { id } = useParams<{ id: string }>();
-  const { userToUpdateData, getUserToUpdateData, useToUpdateHandleChange } = useUser();
+  const {
+    userToUpdateData,
+    getUserToUpdateData,
+    useToUpdateHandleChange,
+    userUrlImage,
+    setUserUrlImage,
+    updateUserUrlImage,
+  } = useUser();
+  const { setOpen, setSeverity, setMessage } = useSnackbar();
+
+  const handleUploadImage = async (userId: any, file: any) => {
+    const response = await uploadPhoto(userId, file);
+    setUserUrlImage(response);
+    setSeverity('success');
+    setMessage('Image updated');
+    setOpen(true);
+  };
+
+  const updateImage = async (target: any) => {
+    if (target.files[0]) {
+      handleUploadImage(id, target.files[0]);
+    }
+  };
 
   useEffect(() => {
     getUserToUpdateData(id); // eslint-disable-line
+    updateUserUrlImage(id);
   }, []);
 
   useEffect(() => {}, [userToUpdateData]);
@@ -47,9 +72,22 @@ const BasicUserDetail: React.FC = () => {
             flexDirection="column"
             padding="10px"
           >
-            <Avatar className={classes.avatar} />
-            <Button variant="outlined" startIcon={<PhotoCameraIcon />}>
+            <Avatar
+              className={classes.avatar}
+              src={userUrlImage}
+              alt={userToUpdateData.firstName}
+            />
+            <Button
+              variant="outlined"
+              startIcon={<PhotoCameraIcon />}
+              component="label"
+            >
               Upload picture
+              <input
+                type="file"
+                hidden
+                onChange={(e) => updateImage(e.target)}
+              />
             </Button>
           </Box>
         </Grid>

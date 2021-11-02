@@ -1,4 +1,5 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react';
+import { getUrlUserImage } from '../firebase/store.js';
 import {
   userLogin,
   getUserById,
@@ -28,6 +29,9 @@ type ContextValue = {
   useToUpdateHandleChange: Function;
   updateUserOnlyChangesFields: Function;
   deleteUser: Function;
+  userUrlImage: string;
+  setUserUrlImage: Function;
+  updateUserUrlImage: Function;
 };
 
 const DEFAULT_VALUE = {
@@ -52,6 +56,9 @@ const DEFAULT_VALUE = {
   useToUpdateHandleChange: () => {},
   updateUserOnlyChangesFields: () => {},
   deleteUser: () => {},
+  userUrlImage: '.',
+  setUserUrlImage: () => {},
+  updateUserUrlImage: () => {},
 };
 
 // eslint-disable-next-line
@@ -70,6 +77,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [userToUpdateData, setUserToUpdateData] = useState<any>(
     DEFAULT_VALUE.userToUpdateData,
   );
+  const [userUrlImage, setUserUrlImage] = useState<any>('.');
 
   const login = async (email: string, password: string) => {
     const response: any = await userLogin(email, password);
@@ -143,6 +151,11 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     return dataResponse;
   };
 
+  const updateUserUrlImage: any = async (id: string) => {
+    const response: any = await getUrlUserImage(id);
+    setUserUrlImage(response);
+  };
+
   const context = {
     getToken,
     setToken,
@@ -153,6 +166,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     useToUpdateHandleChange,
     updateUserOnlyChangesFields,
     deleteUser,
+    userUrlImage,
+    setUserUrlImage,
+    updateUserUrlImage,
   };
 
   return (

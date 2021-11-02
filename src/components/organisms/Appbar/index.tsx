@@ -55,7 +55,7 @@ const Appbar: React.FC<Props> = ({ open, handleDrawerOpen }) => {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" noWrap>
-          Persistent drawer
+          Wedclub
         </Typography>
       </Toolbar>
     </AppBar>

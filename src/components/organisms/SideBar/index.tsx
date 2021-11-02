@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory, Link } from 'react-router-dom';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
@@ -18,8 +19,8 @@ import PersonIcon from '@material-ui/icons/Person';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import { Avatar, Box, Typography } from '@material-ui/core';
-import { Link } from 'react-router-dom';
 import { useUser } from '../../../context/user';
+import clearLocalStorage from '../../../services/localstorage';
 
 const drawerWidth = 240;
 
@@ -62,6 +63,12 @@ const SideBar: React.FC<Props> = ({ open, handleDrawerClose }) => {
   const classes = useStyles();
   const theme = useTheme();
   const { userData, userUrlImage } = useUser();
+  const history = useHistory();
+
+  const logOut = () => {
+    clearLocalStorage();
+    history.push('/');
+  };
 
   return (
     <Drawer
@@ -111,14 +118,12 @@ const SideBar: React.FC<Props> = ({ open, handleDrawerClose }) => {
       <Divider />
       <List>
         {['Log out'].map((text) => (
-          <Link to="/" className={classes.link}>
-            <ListItem button key={text} href="/">
-              <ListItemIcon>
-                <ExitToAppIcon />
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          </Link>
+          <ListItem button key={text} onClick={logOut}>
+            <ListItemIcon>
+              <ExitToAppIcon />
+            </ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
         ))}
       </List>
     </Drawer>

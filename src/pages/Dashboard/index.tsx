@@ -1,10 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  useHistory,
-} from 'react-router-dom';
+import { Switch, Route, useHistory } from 'react-router-dom';
 
 import clsx from 'clsx';
 
@@ -77,25 +72,21 @@ export default function PersistentDrawerLeft() {
   };
 
   return (
-    <Router>
-      <div className={classes.root}>
-        <CssBaseline />
-        <Appbar open={open} handleDrawerOpen={handleDrawerOpen} />
-        <SideBar open={open} handleDrawerClose={handleDrawerClose} />
-        <main
-          className={clsx(classes.content, { [classes.contentShift]: open })}
-        >
-          <div className={classes.drawerHeader} />
-          <Switch>
-            <Route exact path="/dashboard/costumers" component={Costumers} />
-            <Route exact path="/dashboard/account" component={Account} />
-            <Route exact path="/dashboard/user/:id" component={UserDetail} />
-            <Route exact path="/dashboard">
-              Dashboard
-            </Route>
-          </Switch>
-        </main>
-      </div>
-    </Router>
+    <div className={classes.root}>
+      <CssBaseline />
+      <Appbar open={open} handleDrawerOpen={handleDrawerOpen} />
+      <SideBar open={open} handleDrawerClose={handleDrawerClose} />
+      <main className={clsx(classes.content, { [classes.contentShift]: open })}>
+        <div className={classes.drawerHeader} />
+        <Switch>
+          <Route exact path="/dashboard/costumers" component={Costumers} />
+          <Route exact path="/dashboard/account" component={Account} />
+          <Route exact path="/dashboard/user/:id" component={UserDetail} />
+          <Route exact path="/dashboard">
+            Dashboard
+          </Route>
+        </Switch>
+      </main>
+    </div>
   );
 }

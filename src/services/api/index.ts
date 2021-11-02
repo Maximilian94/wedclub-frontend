@@ -40,5 +40,5 @@ export const getUserById = async (id: string) => fetch(`${BASE_URL}/user/${id}`,
 export const updateUserById = async (id: string, newData: object) => {
   const body = { ...newData };
   const response = await fetch(`${BASE_URL}/user/${id}`, options('PUT', body));
-  console.log(response);
+  return response;
 };

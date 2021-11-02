@@ -108,7 +108,7 @@ const SideBar: React.FC<Props> = ({ open, handleDrawerClose }) => {
       <List>
         {['Log out'].map((text) => (
           <Link to="/" className={classes.link}>
-            <ListItem button key={text}>
+            <ListItem button key={text} href="/">
               <ListItemIcon>
                 <ExitToAppIcon />
               </ListItemIcon>

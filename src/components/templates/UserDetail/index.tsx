@@ -7,6 +7,7 @@ import { RouteComponentProps, useParams } from 'react-router-dom';
 import BasicUserDetail from '../../organisms/BasicUserDetail';
 import PersonalUserDetail from '../../organisms/PersonalUserDetail';
 import { useUser } from '../../../context/user';
+import { useSnackbar } from '../../../context/snackbar';
 
 interface RouterParams {
   id: string;
@@ -23,6 +24,17 @@ const UserDetail: React.FC<Props> = () => {
   const classes = useStyles();
   const { id } = useParams<{ id: string }>();
   const { updateUserOnlyChangesFields } = useUser();
+  const { setOpen, setMessage } = useSnackbar();
+
+  const updateUser = async () => {
+    const response = await updateUserOnlyChangesFields(id);
+    const dataResponse = await response.json();
+    if (response.status === 200) {
+      setMessage(dataResponse.message);
+      setOpen(true);
+    }
+  };
+
   return (
     <Box className={classes.box}>
       <BasicUserDetail />
@@ -31,7 +43,7 @@ const UserDetail: React.FC<Props> = () => {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => updateUserOnlyChangesFields(id)}
+          onClick={() => updateUser()}
         >
           Save
         </Button>

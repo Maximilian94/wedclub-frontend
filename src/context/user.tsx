@@ -113,7 +113,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     // console.log(updateData);
     // console.log('Novo');
     // console.log(changedValues);
-    updateUserById(id, changedValues);
+    const response = await updateUserById(id, changedValues);
+    return response;
   };
 
   const useToUpdateHandleChange = (target: HTMLInputElement) => {

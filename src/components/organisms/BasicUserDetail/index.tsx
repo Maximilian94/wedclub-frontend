@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Avatar,
   Box,
@@ -8,12 +8,15 @@ import {
   TextField,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { useParams } from 'react-router-dom';
 
 // icons
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import HeaderUserBox from '../../molecules/HeaderUserBox';
 import BoxUserDetails from '../../atoms/BoxUserDetails';
+
+import { useUser } from '../../../context/user';
 
 const useStyles = makeStyles(() => ({
   paper: { margin: 'auto' },
@@ -22,13 +25,21 @@ const useStyles = makeStyles(() => ({
 
 const BasicUserDetail: React.FC = () => {
   const classes = useStyles();
+  const { id } = useParams<{ id: string }>();
+  const { userToUpdateData, getUserToUpdateData, useToUpdateHandleChange } = useUser();
+
+  useEffect(() => {
+    getUserToUpdateData(id); // eslint-disable-line
+  }, []);
+
+  useEffect(() => {}, [userToUpdateData]);
 
   return (
     <BoxUserDetails>
       <HeaderUserBox title="Basic details" Icon={<AccountBoxIcon />} />
       <Divider />
       <Grid container>
-        <Grid item sm={4}>
+        <Grid item sm={3}>
           <Box
             display="flex"
             justifyContent="center"
@@ -50,20 +61,54 @@ const BasicUserDetail: React.FC = () => {
             alignItems="center"
             padding="10px"
           >
-            <TextField
-              label="Full name"
-              placeholder="Your full name here"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              style={{ margin: 8 }}
-            />
-            <TextField
-              label="Email address"
-              placeholder="Your Email here"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              style={{ margin: 8 }}
-            />
+            <Grid
+              container
+              justifyContent="space-between"
+              alignItems="flex-start"
+            >
+              <Grid item sm={5}>
+                <TextField
+                  name="firstName"
+                  label="First name"
+                  placeholder="Your first name here"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  style={{ margin: 8 }}
+                  onChange={(e) => {
+                    useToUpdateHandleChange(e.target);
+                  }}
+                  value={userToUpdateData.firstName}
+                />
+              </Grid>
+              <Grid item sm={5}>
+                <TextField
+                  name="lastName"
+                  label="Last name"
+                  placeholder="Your last name here"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  style={{ margin: 8 }}
+                  onChange={(e) => {
+                    useToUpdateHandleChange(e.target);
+                  }}
+                  value={userToUpdateData.lastName}
+                />
+              </Grid>
+            </Grid>
+            <Grid container>
+              <Grid item sm={12}>
+                <TextField
+                  name="email"
+                  label="Email address"
+                  placeholder="Your Email here"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  style={{ margin: 8 }}
+                  value={userToUpdateData.email}
+                  onChange={(e) => useToUpdateHandleChange(e.target)}
+                />
+              </Grid>
+            </Grid>
           </Box>
         </Grid>
       </Grid>

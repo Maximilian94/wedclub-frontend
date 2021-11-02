@@ -43,7 +43,7 @@ interface Users {
   lastName: string;
   email: string;
   role: string;
-  id: string;
+  _id: string;
 }
 
 export default function AcccessibleTable() {
@@ -108,7 +108,7 @@ export default function AcccessibleTable() {
                       variant="contained"
                       color="primary"
                       startIcon={<EditIcon />}
-                      href={`/dashboard/user/${row.id}`}
+                      href={`/dashboard/user/${row._id}`} // eslint-disable-line
                     >
                       Edit
                     </Button>

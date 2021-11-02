@@ -34,3 +34,5 @@ export const createAccount = async (
 };
 
 export const getAllUsers = async () => fetch(`${BASE_URL}/user`, options('GET'));
+
+export const getUserById = async (id: string) => fetch(`${BASE_URL}/user/${id}`, options('GET'));

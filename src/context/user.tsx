@@ -1,5 +1,10 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react';
-import { userLogin, getUserById, updateUserById } from '../services/api';
+import {
+  userLogin,
+  getUserById,
+  updateUserById,
+  deleteUserById,
+} from '../services/api';
 
 type ContextValue = {
   getToken: Function;
@@ -22,6 +27,7 @@ type ContextValue = {
   getUserToUpdateData: Function;
   useToUpdateHandleChange: Function;
   updateUserOnlyChangesFields: Function;
+  deleteUser: Function;
 };
 
 const DEFAULT_VALUE = {
@@ -45,6 +51,7 @@ const DEFAULT_VALUE = {
   getUserToUpdateData: () => {},
   useToUpdateHandleChange: () => {},
   updateUserOnlyChangesFields: () => {},
+  deleteUser: () => {},
 };
 
 // eslint-disable-next-line
@@ -130,6 +137,12 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     setOriginalUserToUpdateData(data.userData);
   };
 
+  const deleteUser: any = async (id: string) => {
+    const response = await deleteUserById(id);
+    const dataResponse = await response.json();
+    return dataResponse;
+  };
+
   const context = {
     getToken,
     setToken,
@@ -139,6 +152,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     getUserToUpdateData,
     useToUpdateHandleChange,
     updateUserOnlyChangesFields,
+    deleteUser,
   };
 
   return (

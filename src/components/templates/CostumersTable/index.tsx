@@ -15,6 +15,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { Link } from 'react-router-dom';
 import { getAllUsers } from '../../../services/api';
+import { useUser } from '../../../context/user';
+import { useSnackbar } from '../../../context/snackbar';
 
 const useStyles = makeStyles((theme) => ({
   table: { minWidth: 650 },
@@ -50,12 +52,23 @@ interface Users {
 export default function AcccessibleTable() {
   const classes = useStyles();
   const [users, setUsers] = useState<Users[]>([]);
+  const { deleteUser } = useUser();
+  const { setOpen, setMessage, setSeverity, open } = useSnackbar();
+
+  const deleteUserAction = async (id: string) => {
+    const dataResponse = await deleteUser(id);
+    setMessage(`${dataResponse.message} - Refresh page`);
+    setSeverity('error');
+    setOpen(true);
+  };
 
   const fetchUsers = async (): Promise<any> => {
     const response = await getAllUsers();
     const usersResponse = await response.json();
     setUsers(usersResponse);
   };
+
+  useEffect(() => {}, [open]);
 
   useEffect(() => {
     fetchUsers();
@@ -122,6 +135,9 @@ export default function AcccessibleTable() {
                       variant="contained"
                       color="secondary"
                       startIcon={<DeleteIcon />}
+                      onClick={
+                        () => deleteUserAction(row._id) // eslint-disable-line
+                      }
                     >
                       Delete
                     </Button>

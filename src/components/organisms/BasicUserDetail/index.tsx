@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Avatar,
   Box,
@@ -13,11 +13,11 @@ import { useParams } from 'react-router-dom';
 // icons
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
+import { getUrlUserImage, uploadPhoto } from '../../../firebase/store.js';
 import HeaderUserBox from '../../molecules/HeaderUserBox';
 import BoxUserDetails from '../../atoms/BoxUserDetails';
 
 import { useUser } from '../../../context/user';
-import { uploadPhoto } from '../../../firebase/store.js';
 import { useSnackbar } from '../../../context/snackbar';
 
 const useStyles = makeStyles(() => ({
@@ -32,10 +32,9 @@ const BasicUserDetail: React.FC = () => {
     userToUpdateData,
     getUserToUpdateData,
     useToUpdateHandleChange,
-    userUrlImage,
     setUserUrlImage,
-    updateUserUrlImage,
   } = useUser();
+  const [selectedUserImage, setSelectedUserImage] = useState<any>();
   const { setOpen, setSeverity, setMessage } = useSnackbar();
 
   const handleUploadImage = async (userId: any, file: any) => {
@@ -47,14 +46,19 @@ const BasicUserDetail: React.FC = () => {
   };
 
   const updateImage = async (target: any) => {
-    if (target.files[0]) {
-      handleUploadImage(id, target.files[0]);
+    if (target.file) {
+      if (target.files[0]) {
+        handleUploadImage(id, target.files[0]);
+      }
+    } else {
+      const imageURLFromFirebase = await getUrlUserImage(id);
+      if (imageURLFromFirebase) setSelectedUserImage(imageURLFromFirebase);
     }
   };
 
   useEffect(() => {
     getUserToUpdateData(id); // eslint-disable-line
-    updateUserUrlImage(id);
+    updateImage([null]);
   }, []);
 
   useEffect(() => {}, [userToUpdateData]);
@@ -74,7 +78,7 @@ const BasicUserDetail: React.FC = () => {
           >
             <Avatar
               className={classes.avatar}
-              src={userUrlImage}
+              src={selectedUserImage}
               alt={userToUpdateData.firstName}
             />
             <Button

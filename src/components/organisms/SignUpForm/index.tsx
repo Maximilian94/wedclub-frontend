@@ -10,8 +10,6 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import { Snackbar } from '@material-ui/core';
-import MuiAlert from '@material-ui/lab/Alert';
 import FormInputs from '../../atoms/FormInputs';
 import useStyles from '../../../Hooks/styles';
 import {
@@ -21,6 +19,8 @@ import {
 } from '../../../services/validations';
 
 import { createAccount } from '../../../services/api';
+
+import { useSnackbar } from '../../../context/snackbar';
 
 interface ErrorObj {
   firstName: string;
@@ -51,11 +51,11 @@ const invalidFielLabel: any = {
   email: 'Invalid Email',
 };
 
-export default function SignUp() {
+const SignUp: React.FC = () => {
   const [formsData, setFormsData] = useState(INICIAL_DATA);
   const [errors, setErrors] = useState<ErrorObj>(INICIAL_ERROR);
-  const [fetchFeedback, setFetchFeedback] = useState('');
   const classes = useStyles();
+  const { setOpen, setSeverity, setMessage } = useSnackbar();
 
   const handleChange = (target: any) => {
     const { name, value } = target;
@@ -203,10 +203,19 @@ export default function SignUp() {
       formsData.lastName,
     );
 
+    console.log(response);
+
     if (response.status === 201) {
       const { message } = await response.json();
-      setFetchFeedback(message);
+      setSeverity('success');
+      setMessage(message);
+      setOpen(true);
       resetForms();
+    } else {
+      const { message } = await response.json();
+      setSeverity('error');
+      setMessage(message);
+      setOpen(true);
     }
     return '';
   };
@@ -264,12 +273,9 @@ export default function SignUp() {
             </Grid>
           </Grid>
         </form>
-        <Snackbar open={fetchFeedback !== ''} autoHideDuration={6000}>
-          <MuiAlert elevation={6} variant="filled" severity="success">
-            {fetchFeedback}
-          </MuiAlert>
-        </Snackbar>
       </div>
     </Container>
   );
-}
+};
+
+export default SignUp;

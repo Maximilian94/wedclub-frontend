@@ -1,9 +1,17 @@
+import * as imageConversion from 'image-conversion';
 import firebase from './index';
 
 export const uploadPhoto = async (id, file) => {
   const imgPath = `${id}/avatar.jpg`;
   const storageRef = await firebase.storage().ref(imgPath);
-  const put = await storageRef.put(file);
+
+  const compressedImage = await imageConversion.compress(file, {
+    quality: 0.7,
+    width: 200,
+    height: 200,
+  });
+
+  const put = await storageRef.put(compressedImage);
   const downloadUrl = await put.ref.getDownloadURL().then((url) => url);
   return downloadUrl;
 };

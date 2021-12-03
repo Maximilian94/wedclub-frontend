@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 export default function PersistentDrawerLeft() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
-  const { getToken } = useUser();
+  const { getToken, updateUserUrlImage, userData } = useUser();
   const history = useHistory();
 
   const isTokenExists = () => !!getToken();
@@ -61,6 +61,7 @@ export default function PersistentDrawerLeft() {
 
   useEffect(() => {
     invalidTokenRedirectsToLogin();
+    updateUserUrlImage(userData._id); // eslint-disable-line
   }, []);
 
   const handleDrawerOpen = () => {
